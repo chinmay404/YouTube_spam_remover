@@ -12,12 +12,12 @@ def request(youtube,list):
         request = youtube.comments().delete(id=i)
         request.execute()
 
-def delet(list):
+def delet(list,c_secret):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     api_service_name = "youtube"
     api_version = "v3"
-    client_secrets_file = "sample.json"
+    client_secrets_file = c_secret
 
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(

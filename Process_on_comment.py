@@ -1,44 +1,30 @@
 from unittest import case
 import pandas as pd
 import comment_deleter as deleter
-# import numpy as np
-# from sklearn.datasets import load_wine
 
-# def pre_process(name):
-#     data= pd.read_csv(name)
- 
-# System Checks No of replays  
-        
+
+def ban(c_secret):
+    print("Working On Ban !!")
+def delet_all(c_secret):
+    deleter.delet(c_secret)
+
+def actions(c_secret):
+    if int(input('\n---------------\n    Actions\n---------------\n1.Delet Specific\n2.Delet Comments\n3.Ban From Chanel\n---------------\n')) == 1:
+        ban(c_secret) 
+    else  :
+        delet_all(c_secret) 
+    
+
 # Auto Check Spammer 
-def check_spammer(name):
+def check_spammer(name,c_secret):
     c = int(input('Display count : '))
     df = pd.read_csv(name)
     dups_comment = df.pivot_table(index = ['Display Name'], aggfunc ='size').head(c)
-    print('Top Spammers : ')
+    print('\n---------------\nTop Spammers : ')
     print(dups_comment)
-    if int(input('\n---------------\n   Actions  \n1.Ban\n2.Delet Comments')) == 1:
-        pass
-    #     ban()
+    actions(c_secret)
+
     
-    # else :
-    #     delet_all() 
-    
-    
-    
-# def actions():
-    
-
-        
-        
-        
-        
-
-
-
- 
-
-
-
 # User Give Spam Sentence   
 def creat_list_Input_By_User():
     print("Enter spam sentence To Stop Enter (' ~ ') : ")
@@ -49,32 +35,21 @@ def creat_list_Input_By_User():
             break
         li.append(i)
     return li        
-      
-    
-def search(name):
+         
+def search(name,c_secret):
     li = creat_list_Input_By_User()
     data= pd.read_csv(name)
     for i in li:
         ids = data.loc[data['Comment'].str.contains(i, case = False)]
         id = ids['ID']
         print(id) 
+    actions(c_secret)
 
-
-
-
-
-
-# after ading client secret key in delet file use this function
-# deleter.delet(id)
-
-
-
-
-def choice(name):
+def choice(name,c_secret):
     print("1.Auto Check Spammer \n2.Enter Spam Sentence\n---------------")
     c = int(input())
-    print('\n---------------')
+    print('---------------')
     if c == 1:
-        check_spammer(name)
+        check_spammer(name,c_secret)
     else:
-        search(name)
+        search(name,c_secret)
