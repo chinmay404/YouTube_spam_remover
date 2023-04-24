@@ -1,35 +1,74 @@
-import json
-import comment_extractor as extractor
-from matplotlib import lines
+import pandas as pd
+import comment_deleter as deleter
 
-key = ""
-print("----------Spam Remover----------\n\nAPI key:\n1.Deafult\n2.New Key\n3.Previous Key")
-c = int(input("   :"))
-if c==1:
-    print("Deafult : AIzaSyCcRfNg_VT6KzC6jvr2IKZ2EnMkGAYeSIw")
-    key = "AIzaSyCcRfNg_VT6KzC6jvr2IKZ2EnMkGAYeSIw"
-    
-elif c == 2 :
-    new_key = input("New Key : ")
-    if(len(new_key)!= 39):
-        print("Invalid Key!")
-        new_key = input("New Key : ")
-    x = input("save Key (y/n) : ")
-    if(x == 'y'):
-        file = open("data.txt","a")
-        file.write("\n"+new_key)
-    key = new_key
-elif c == 3:
-    file = open("data.txt","r")
-    print("Previous Keys :")
-    line = file.readlines()
-    print(line) 
-    key = line[int(input("Enter No : "))]
-c_secret = input("Client Secret .json : ")
 
-extractor.main(key)
+def ban(c_secret):
+    print("Working On Ban !!")
+    deleter.ban(c_secret)
 
-        
+
+def delete_all(c_secret):
+    deleter.delete_all(c_secret)
+
+
+def actions(c_secret):
+    if int(input('\n---------------\n    Actions\n---------------\n1.Delet Specific\n2.Delet Comments\n3.Ban From Chanel\n---------------\n')) == 1:
+        ban(c_secret)
+    else:
+        delete_all(c_secret)
+
+
+# Auto Check Spammer
+def check_spammer(name, c_secret):
+    c = int(input('Display count : '))
+    df = pd.read_csv(name)
+    dups_comment = df.pivot_table(index=['Display Name'], aggfunc='size').head(c)
+    print('\n---------------\nTop Spammers : ')
+    print(dups_comment)
+    actions(c_secret)
+
+
+# User Give Spam Sentence
+def create_list_input_by_user():
+    print("Enter spam sentence To Stop Enter (' ~ ') : ")
+    li = []
+    while 1:
+        i = input()
+        if i == "~":
+            break
+        li.append(i)
+    return li
+
+
+def search(name, c_secret):
+    li = create_list_input_by_user()
+    data = pd.read_csv(name)
+    for i in li:
+        ids = data.loc[data['Comment'].str.contains(i, case=False)]
+        id = ids['ID']
+        print(id)
+    actions(c_secret)
+
+
+def choice(name, c_secret):
+    print("1.Auto Check Spammer \n2.Enter Spam Sentence\n---------------")
+    c = int(input())
+    print('---------------')
+    if c == 1:
+        check_spammer(name, c_secret)
+    else:
+        search(name, c_secret)
+
+
+def main():
+    name = input("Enter csv file name : ")
+    c_secret = input("Enter your youtube API secret : ")
+    choice(name, c_secret)
+
+
+if __name__ == "__main__":
+    main()
+
               
 
     
