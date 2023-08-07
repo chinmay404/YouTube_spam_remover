@@ -35,3 +35,6 @@ The maximum number of comments to extract (up to 1000)
 Whether to save the API key for future use
 The path to the Google OAuth 2.0 client secret file
 Once you enter this information, the program will extract the comments from the video, remove spam comments, and save the clean comments in a CSV file.
+
+# learned skills : 
+python , API ,
